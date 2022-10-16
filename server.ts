@@ -1,7 +1,5 @@
-import { build } from './src/app'
+import { app as server } from './src/app'
 import { gracefulShutdown } from './src/utils/shutdown'
-
-const server = build()
 
 async function startServer(): Promise<void> {
 	try {
