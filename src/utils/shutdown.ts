@@ -1,10 +1,8 @@
 import type { FastifyInstance } from 'fastify'
 
-function gracefulShutdown(signal: string, server: FastifyInstance) {
-	server.log.info(
-		`${signal} signal received and server is shutting down gracefully`
-	)
-	server.close()
+async function gracefulShutdown(signal: string, server: FastifyInstance): Promise<void> {
+	server.log.info(`${signal} signal received and server is shutting down gracefully`)
+	await server.close()
 	process.exit(0)
 }
 

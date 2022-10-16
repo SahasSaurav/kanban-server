@@ -1,11 +1,8 @@
 import fastify from 'fastify'
 
-import {
-  serializerCompiler,
-  validatorCompiler,
-} from 'fastify-type-provider-zod';
+import { serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod'
 
-import {router} from './router/api'
+import { router } from './router/api'
 
 import type { FastifyInstance } from 'fastify/types/instance'
 
@@ -15,9 +12,9 @@ const server: FastifyInstance = fastify({
 	requestTimeout: 120 * 1000,
 })
 
-server.setValidatorCompiler(validatorCompiler);
-server.setSerializerCompiler(serializerCompiler);
+server.setValidatorCompiler(validatorCompiler)
+server.setSerializerCompiler(serializerCompiler)
 
-server.register(router, {prefix:'api'})
+void server.register(router, { prefix: 'api' })
 
 export { server }
