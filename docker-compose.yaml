@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  db:
+    image: 'postgres:14'
+    container_name: kanban_postgres
+    # hostname: kanban
+    networks:
+      - web
+    ports:
+      - '5432:5432'
+    # volumes:
+    #   - postgre_data:/data/db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=kanbandb
+networks:
+  web:
+    driver: bridge
+# volumes:
+# postgre_data:
+#   driver: local

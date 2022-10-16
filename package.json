@@ -20,6 +20,9 @@
 		"check:linting": "eslint . --ext js --ext ts",
 		"check:everything": "npm run check:types && npm run check:formatting && npm run check:linting"
 	},
+	"prisma": {
+		"schema": "./src/db/schema.prisma"
+	},
 	"keywords": [
 		"fastify",
 		"node",

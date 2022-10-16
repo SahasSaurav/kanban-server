@@ -1,0 +1,116 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String        @default(cuid())
+  frist_name   String        @db.VarChar(50)
+  last_name    String        @db.VarChar(50)
+  email        String        @db.VarChar(75)
+  password     String        @db.VarChar(100)
+  user_role    UserRole      @default(USER)
+  user_status  UserStatus    @default(INACTIVE)
+  board        Board?
+  column       Column[]
+  // shared_board SharedBoard[]
+  task         Task[]
+  created_at   DateTime      @default(now())
+  updated_at   DateTime      @updatedAt
+
+  @@id([id])
+  @@unique([email])
+  @@map("user")
+}
+
+enum UserStatus {
+  ACTIVE   @map("active")
+  INACTIVE @map("inactive")
+
+  @@map("user_status")
+}
+
+enum UserRole {
+  ADMIN @map("admin")
+  USER  @map("user")
+
+  @@map("user_role")
+}
+
+model Board {
+  id          String        @default(cuid())
+  name        String        @db.VarChar(50)
+  user_id     User          @relation(fields: [created_by], references: [id])
+  created_by  String
+  column      Column[]
+  // sharedBoard SharedBoard[]
+  deleted  Boolean  @default(false)
+  created_at  DateTime      @default(now())
+  updated_at  DateTime      @updatedAt
+
+  @@id([id])
+  @@unique([created_by])
+  @@map("board")
+}
+
+// model SharedBoard {
+//   id         String          @default(cuid())
+//   shared_by  String
+//   user       User            @relation(fields: [shared_by], references: [id])
+//   shared_to  String   
+  
+//   board_id   String
+//   board      Board           @relation(fields: [board_id], references: [id])
+//   permission BoardPermission @default(VIEWER)
+//   created_at DateTime        @default(now())
+//   updated_at DateTime        @updatedAt
+
+//   @@id([id])
+//   @@map("shared_board")
+// }
+
+// enum BoardPermission {
+//   EDITOR @map("editor")
+//   VIEWER @map("viewer")
+
+//   @@map("board_permission")
+// }
+
+model Column {
+  id         String   @default(cuid())
+  name       String   @db.VarChar(50)
+  board_id   String
+  board      Board    @relation(fields: [board_id], references: [id])
+  task       Task[]
+  user       User     @relation(fields: [created_by], references: [id])
+  created_by String
+  deleted  Boolean  @default(false)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@id([id])
+  @@map("column")
+}
+
+model Task {
+  id          String   @default(cuid())
+  title       String   @db.VarChar(50)
+  description String   @db.Text
+  column_id   String
+  column      Column   @relation(fields: [column_id], references: [id])
+  user        User     @relation(fields: [created_by], references: [id])
+  created_by  String
+  deleted  Boolean  @default(false)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  @@id([id])
+  @@map("task")
+}
