@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import httpStatus from 'http-status'
 
 import type { FastifyRequest, FastifyReply } from 'fastify'
 
@@ -12,9 +13,9 @@ async function healthCheckHandler(request: FastifyRequest, reply: FastifyReply):
 			uptime: process.uptime(),
 			message: 'Server is working fine',
 		}
-		return await reply.code(200).send(healthCheckObj)
+		return reply.code(httpStatus.OK).send(healthCheckObj)
 	} catch (err) {
-		return await reply.code(503).send(new Error('Server is not running'))
+		return reply.code(httpStatus.SERVICE_UNAVAILABLE).send(new Error('Server is not running'))
 	}
 }
 

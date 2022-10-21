@@ -1,7 +1,13 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-echo "Checking styling, linting and types before commit. \e[0m"
+echo "Checking styling, linting, test cases and types before commit. \e[0m"
+
+# Check test passed
+npm run test || (
+    echo "\e[1;31m Oops! Test failed. Please fixed the test cases \e[0m"
+    false;
+)
 
 # Check tsconfig standards
 npm run check:types ||

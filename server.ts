@@ -1,4 +1,4 @@
-import { server } from './src/app'
+import { app as server } from './src/app'
 import { gracefulShutdown } from './src/utils/shutdown'
 
 async function startServer(): Promise<void> {

@@ -6,15 +6,15 @@ import { router } from './router/api'
 
 import type { FastifyInstance } from 'fastify/types/instance'
 
-const server: FastifyInstance = fastify({
+const app: FastifyInstance = fastify({
 	logger: true,
 	bodyLimit: 5 * 1024 * 1024,
 	requestTimeout: 120 * 1000,
 })
 
-server.setValidatorCompiler(validatorCompiler)
-server.setSerializerCompiler(serializerCompiler)
+app.setValidatorCompiler(validatorCompiler)
+app.setSerializerCompiler(serializerCompiler)
 
-void server.register(router, { prefix: 'api' })
+void app.register(router, { prefix: 'api' })
 
-export { server }
+export { app }
